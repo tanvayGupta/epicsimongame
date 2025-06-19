@@ -1,7 +1,6 @@
 const colors = ["red", "blue", "green", "yellow"]; // 0 - red, 1 - blue, 2 - green, 3 - yellow
 var gamePattern = [];
 var gamePatternClone = [];
-// var win = true;
 var userClickedPattern = [];
 var userMouseInputEnabled = false;
 var userKeyboardInputEnabled = true;
@@ -16,25 +15,6 @@ var level = 1;
 // gameLogic();
 
 
-if (gameOver == true) {
-    userMouseInputEnabled = false;
-    console.log("Game Over");
-    // Display Game Over message
-    $("h1").text("Game Over, Press Any Key to Restart");
-    $("body").addClass("game-over");
-    setTimeout(function () {
-        $("body").removeClass("game-over");
-    }, 200);
-    // $(document).keydown(function () {
-    //     startGame();
-    //     gameLogic();
-    // });
-    // Reset game variables
-    // gamePattern = [];
-    // userClickedPattern = [];
-    // win = true;
-    // gameOver = false;
-}
 
 function startGame() {
     userMouseInputEnabled = true;
@@ -45,40 +25,34 @@ function startGame() {
     $("body").removeClass("game-over");
     gamePattern = [];
     userClickedPattern = [];
-    // win = true;
     gameFlash();
-    // userMouseInputEnabled = true;
-    // console.log("Game Started");
 }
 
 
 $(".btn").click(function(){
-    var userClick = Number(this.textContent);
+    var userColor = $(this).data('color');
+    var userClick = colors.indexOf(userColor);
     gotClicked(userClick);
 });
 
 $(document).keydown(function () {
-    if (gameOver == true) {
+    if (gameOver === true) {
         startGame();
         gameOver = false;
     }
-    else if (userKeyboardInputEnabled == true){
+    else if (userKeyboardInputEnabled === true){
         startGame();
     }
 });
-// }
+
 function gotClicked(userClick) {
-    // userClick = Number(userClick);
-    console.log("User Clicked: " + userClick);
-    console.log(typeof userClick);
-    if (userMouseInputEnabled == true && userClickedPattern.length < level) {
+    if (userMouseInputEnabled === true && userClickedPattern.length < level) {
         userFlash(userClick);
         var lastIndex = userClickedPattern.length - 1;
-        if (userClick != gamePattern[lastIndex]) {
+        if (userClick !== gamePattern[lastIndex]) {
             gameOver = true;
             userMouseInputEnabled = false;
-            console.log("Wrong Clicked: " + userClick);
-            var wrongSound = new Audio("sounds/wrong.mp3");
+            var wrongSound = new Audio("assets/sounds/wrong.mp3");
             wrongSound.play();
             // Display Game Over message
             $("h1").text("Game Over, Press Any Key to Restart");
@@ -120,7 +94,7 @@ function gameFlash() {
     userMouseInputEnabled = false;
     var randomItem = Math.floor(Math.random() * colors.length);
     $("#" + colors[randomItem]).fadeOut(100).fadeIn(100);
-    var sound = new Audio("sounds/" + colors[randomItem] + ".mp3");
+    var sound = new Audio("assets/sounds/" + colors[randomItem] + ".mp3");
     sound.play();
     gamePattern.push(randomItem);
     userMouseInputEnabled = true;
@@ -128,8 +102,7 @@ function gameFlash() {
 
 function userFlash(userClick) {
     $("#" + colors[userClick]).fadeOut(100).fadeIn(100);
-    // console.log("User Clicked: " + userClick);
-    var sound = new Audio("sounds/" + colors[userClick] + ".mp3");
+    var sound = new Audio("assets/sounds/" + colors[userClick] + ".mp3");
     sound.play();
     userClickedPattern.push(userClick);
     // console.log("User Clicked: " + userClickedPattern[userClickedPattern.length - 1]);
